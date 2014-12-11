@@ -153,7 +153,7 @@ class RequestToPDF(object):
                 domain,
                 format,
                 orientation,
-                wait_before_render
+                str(wait_before_render)
             ], close_fds=True, stdout=PIPE, stderr=STDOUT)
             phandle.communicate()
 
