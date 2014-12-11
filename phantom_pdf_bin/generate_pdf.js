@@ -19,6 +19,7 @@ cookie_file = system.args[3];
 domain = system.args[4];
 format = system.args[5]
 orientation = system.args[6];
+wait_before_render = system.args[7];
 
 info = fs.read(cookie_file).split(' ');
 csrftoken = info[0];
@@ -44,15 +45,17 @@ page.open(address, function (status) {
         console.log('Unable to load the address!');
         phantom.exit();
     } else {
-        // If we are here, it means we rendered page successfully
-        // Use "evaluate" method of page object to manipulate the web page
-        // Notice I am passing the data into the function, so I can use
-        // them on the page
-        page.evaluate(function(data) {
-        }, data);
+        window.setTimeout(function () {
+            // If we are here, it means we rendered page successfully
+            // Use "evaluate" method of page object to manipulate the web page
+            // Notice I am passing the data into the function, so I can use
+            // them on the page
+            page.evaluate(function(data) {
+            }, data);
 
-        // Now create the output file and exit PhantomJS
-        page.render(output);
-        phantom.exit();
+            // Now create the output file and exit PhantomJS
+            page.render(output);
+            phantom.exit();
+        }, wait_before_render);
     }
 });

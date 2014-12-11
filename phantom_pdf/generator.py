@@ -122,7 +122,7 @@ class RequestToPDF(object):
 
     def request_to_pdf(self, request, basename,
                        format=DEFAULT_SETTINGS['PHANTOMJS_FORMAT'],
-                       orientation=DEFAULT_SETTINGS['PHANTOMJS_ORIENTATION']):
+                       orientation=DEFAULT_SETTINGS['PHANTOMJS_ORIENTATION'], wait_before_render=0):
         """Receive request, basename and return a PDF in an HttpResponse."""
 
         file_src = self._set_source_file_name(basename=basename)
@@ -152,7 +152,8 @@ class RequestToPDF(object):
                 cookie_file,
                 domain,
                 format,
-                orientation
+                orientation,
+                wait_before_render
             ], close_fds=True, stdout=PIPE, stderr=STDOUT)
             phandle.communicate()
 
@@ -165,7 +166,7 @@ class RequestToPDF(object):
 
 def render_to_pdf(request, basename,
                   format=DEFAULT_SETTINGS['PHANTOMJS_FORMAT'],
-                  orientation=DEFAULT_SETTINGS['PHANTOMJS_ORIENTATION']):
+                  orientation=DEFAULT_SETTINGS['PHANTOMJS_ORIENTATION'], wait_before_render=0):
     """Helper function for rendering a request to pdf.
     Arguments:
         request = django request.
@@ -175,5 +176,5 @@ def render_to_pdf(request, basename,
     """
     request2pdf = RequestToPDF()
     response = request2pdf.request_to_pdf(request, basename, format=format,
-                                          orientation=orientation)
+                                          orientation=orientation, wait_before_render=wait_before_render)
     return response
